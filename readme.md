@@ -11,4 +11,4 @@ Generate secret using `secrets.token_hex(16)` and put it in `secrets.txt`
 Run the server using `python app.py`.  
 On the first run, you will be prompted for user data for admin.  
 
-LICENCES file was created using `pip-licenses`.
+`LICENCES.json` file contains licences of dependencies that are used in the program and was created using `pip-licenses`.
