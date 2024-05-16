@@ -1,8 +1,5 @@
-# Database is stored in "instance/db"
+# Stores database (db) and secrets (secrets.py)
 instance/
-
-# Secret key for app is located in "secrets.txt"
-secrets.txt
 
 # Misc Python-related folder
 __pycache__/
