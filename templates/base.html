@@ -6,8 +6,9 @@
         <meta name="description" content ="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.svg') }}">
     </head>
-    <body class="backgroundImg" style="padding: 0; margin-bottom: 0;">
+    <body style="padding: 0; margin-bottom: 0;">
         {% block body %}{% endblock %}
     </body>
 </html>
