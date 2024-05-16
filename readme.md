@@ -5,7 +5,7 @@ I'm creating it as my bachelor's degree project.
 
 Install dependencies using
 `pip install -r requirements.txt`  
-Generate secret using `secrets.token_hex(16)` and put it in `secrets.txt`
+Generate secret using `secrets.token_hex(16)` and put it in `instance/secrets.py` as `SECRET_KEY` variable
 
 
 Run the server using `python app.py`.  
