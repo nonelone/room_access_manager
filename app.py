@@ -48,5 +48,5 @@ if __name__ == "__main__":
     print("Initializing database...")
     with app.app_context():
         init_database()
-    print(f"Starting app @{app.config['HOST']}:{app.config['PORT']} with debug set to {app.config['DEBUG']}...")
+    print(f"Starting app @ {app.config['HOST']}:{app.config['PORT']} with debug set to {app.config['DEBUG']}...")
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
