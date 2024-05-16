@@ -7,15 +7,13 @@ from models import db, init_database, Admin
 
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(api_blueprint)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db'
-
-with open("secrets.txt", "r") as f:
-    app.config['SECRET_KEY'] = f.readline()
+app.config.from_object('config') # "global" configuration from config.py
+app.config.from_pyfile('secrets.py') # "secret" configurations in instance/secrets.py
 
 db.init_app(app)
 
@@ -39,6 +37,16 @@ def home_page():
     return render_template("home.html")
 
 if __name__ == "__main__":
+    print(
+        """
+ __      __   _                    _         ___    _   __  __   _ 
+ \ \    / /__| |__ ___ _ __  ___  | |_ ___  | _ \  /_\ |  \/  | | |
+  \ \/\/ / -_) / _/ _ \ '  \/ -_) |  _/ _ \ |   / / _ \| |\/| | |_|
+   \_/\_/\___|_\__\___/_|_|_\___|  \__\___/ |_|_\/_/ \_\_|  |_| (_)
+        """
+    )
+    print("Initializing database...")
     with app.app_context():
         init_database()
-    app.run(debug=True, host='0.0.0.0', port=2137)
+    print(f"Starting app @{app.config['HOST']}:{app.config['PORT']} with debug set to {app.config['DEBUG']}...")
+    app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
