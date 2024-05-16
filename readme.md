@@ -1,5 +1,5 @@
 # Room Access Manager  
-!["Project Icon"](https://raw.githubusercontent.com/nonelone/room_access_manager/master/icon.svg, "Room Access Manager")
+!["Project Icon"](https://raw.githubusercontent.com/nonelone/room_access_manager/master/icon.svg "Room Access Manager")
 RAM is a system for managing room access to rooms using NFC cards.  
 I'm creating it as my bachelor's degree project.
 
