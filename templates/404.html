@@ -3,3 +3,28 @@
 {% block title %}
 404 Error
 {% endblock %}
+
+{% block body %}
+
+<table style="width: 90%; margin:5%">
+    <tr>
+        <td>
+            <img src="{{url_for('static', filename='icon.svg')}}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h1 style="font-size: 3vw;">
+                Page not found!
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="font-size: 1.5vw;">
+                <a href="{{url_for("home_page")}}">Return to home page</a>
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
