@@ -2,19 +2,42 @@
 {% block title %}
 Log In
 {% endblock %}
-{% block body %}   
-<br><br>
-<div class="mainText">
-    <h1 style="text-align: center;">Login</h1>
-    <br>
-    <form method="POST" action="{{ url_for('auth.login') }}">
-        <label for="email">Email:</label>
-        <input type="text" name="email" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <input type="submit" value="Login">
-    </form>
-    <br>
-</div>
-
+{% block body %}
+    {% if bad %}
+        <h1 style="text-align: center;">Incorrect password or email!</h1>
+    {% endif %}
+    <table style="width: 90%; margin-left: 5%; margin-right: 5%; margin-top: 3%;">
+        <tr>
+            <td>
+                <img src="{{url_for('static', filename='icon.svg')}}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-size: 1.5vw;">
+                    Login
+                </p>
+            </td>
+        </tr>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <tr>
+                <td>
+                    <label for="email" style="font-size: 1vw;">Email:</label><br>
+                    <input type="text" name="email" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password" style="font-size: 1vw;">Password:</label><br>
+                    <input type="password" name="password" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    <input style="font-size: 1vw;" type="submit" value="Login">
+                </td>
+            </tr>
+        </form>
+    </table>
 {% endblock %}
