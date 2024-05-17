@@ -9,6 +9,9 @@ auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated: 
+        return redirect(url_for('auth.manager'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -18,7 +21,9 @@ def login():
         if admin and check_password_hash(admin.password, password):
             login_user(admin)
             return redirect(url_for('auth.manager'))
-        else: print('Not authorized to log in!')
+        else: 
+            print(f'Unauthorized login attempt by {request.remote_addr}')
+            return render_template('login.html', bad=True)
 
     return render_template('login.html')
 
