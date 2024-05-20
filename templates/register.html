@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Account registration
+{% endblock %}
+
+{% block body %}
+<table width="100%">
+    <tr style="background-color: bisque; font-size: 1.5vw;">
+        <th width="15%">
+            {{ current_user.admin_name }} {{ current_user.admin_last_name}}
+        </th>
+        <th width="70%">
+            Register new admin account
+        </th>
+        <th width="15%">
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </th>
+    </tr>
+</table>
+
+{% if bad %}
+<h1 style="text-align: center;">Can't create an account!</h1>
+{% endif %}
+
+{% if good %}
+<h1 style="text-align: center;">Account created!</h1>
+{% endif %}
+
+<table style="width: 100%;">
+    <td>
+        <br>
+    </td>
+    <tr>
+        <td>
+            <img src="{{url_for('static', filename='icon.svg')}}">
+        </td>
+    </tr>
+    <td>
+        <br>
+    </td>
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        <tr>
+            <td>
+                <label for="firstName" style="font-size: 1vw;">First name:</label><br>
+                <input type="text" name="firstName" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="lastName" style="font-size: 1vw;">Last name:</label><br>
+                <input type="text" name="lastName" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="email" style="font-size: 1vw;">Email:</label><br>
+                <input type="text" name="email" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="password" style="font-size: 1vw;">Password:</label><br>
+                <input type="password" name="password" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br>
+                <input style="font-size: 1vw;" type="submit" value="Create account">
+            </td>
+        </tr>
+    </form>
+</table>
+
+{% endblock %}
