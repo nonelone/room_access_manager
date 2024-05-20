@@ -38,3 +38,8 @@ def logout():
 @login_required
 def manager():
     return render_template('manager.html')
+
+@auth_blueprint.route("/register")
+@login_required
+def register():
+    return render_template('register.html')

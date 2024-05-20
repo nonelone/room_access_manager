@@ -1,1 +1,34 @@
-{{ current_user.admin_name }} {{ current_user.admin_last_name}}
+{% extends 'base.html' %}
+
+{% block title %}
+Manager
+{% endblock %}
+
+{% block body %}
+<table width="100%">
+    <tr style="background-color: bisque; font-size: 1vw;">
+        <th width="10%">
+            {{ current_user.admin_name }} {{ current_user.admin_last_name}} [ {{ current_user.email }} ]
+        </th>
+        <th width="80%">
+        </th>
+        <th width="10%">
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </th>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr style="background-color: bisque; font-size: 1vw;">
+        <th width="10%">
+            {{ current_user.admin_name }} {{ current_user.admin_last_name}} [ {{ current_user.email }} ]
+        </th>
+        <th width="80%">
+        </th>
+        <th width="10%">
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </th>
+    </tr>
+</table>
+
+{% endblock %}
