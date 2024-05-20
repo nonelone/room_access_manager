@@ -3,11 +3,11 @@ from flask_login import UserMixin
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import secrets
 import os.path
 import getpass
 
 db = SQLAlchemy()
-
 
 class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
@@ -16,27 +16,41 @@ class Admin(db.Model, UserMixin):
     admin_last_name = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String, nullable=False)
 
-class Nfc_id(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-    owner_name = db.Column(db.String(30), nullable=False)
-    owner_last_name = db.Column(db.String(30), nullable=False)
+class User(db.Model):
+    nfc_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
+    user_name = db.Column(db.String(30), nullable=False)
+    user_last_name = db.Column(db.String(30), nullable=False)
 
-class Token(db.Model):
+class Lock(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-    token_name = db.Column(db.String(30), nullable=False, unique=True)
+    lock_name = db.Column(db.String(30), nullable=False, unique=True)
+    token = db.Column(db.String(255), nullable=False, unique=True)
 
 class Tokens(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-    nfc_id = db.Column(db.Integer, db.ForeignKey(Nfc_id.id))
-    token_id = db.Column(db.Integer, db.ForeignKey(Token.id))
+    nfc_id = db.Column(db.Integer, db.ForeignKey(User.nfc_id))
+    lock_id = db.Column(db.Integer, db.ForeignKey(Lock.id))
 
 def add_admin(name, last_name, email, password):
-    print('Creating new admin account...')
     if Admin.query.filter_by(email=email).first() is None:
         new_admin = Admin(admin_name=name, admin_last_name = last_name, email=email, password=generate_password_hash(password))
         db.session.add(new_admin)
         db.session.commit()
 
+def add_user(name, last_name, card_id):
+    if User.query.filter_by(nfc_id=card_id).first() is None:
+        new_user = User(user_name=name, user_last_name=last_name, nfc_id=card_id)
+        db.session.add(new_user)
+        db.session.commit()
+
+def add_lock(lock_name):
+    if Lock.query.filter_by(lock_name=lock_name).first() is None:
+        token=secrets.token_hex(32)
+        new_lock = Lock(lock_name=lock_name, token=token)
+        db.session.add(new_lock)
+        db.session.commit()
+
+        return token
 
 def init_database():
     if os.path.isfile('instance/db'):
@@ -45,9 +59,7 @@ def init_database():
         print("Database not found! Creating new database...")
         db.create_all()
 
-    if Admin.query.first() is not None:
-        pass
-    else:
+    if Admin.query.first() is None:
         print("No admin has been found!\nYou need to create admin!")
         name = input("Admin's name: ")
         last_name = input("Admin's last name: ")

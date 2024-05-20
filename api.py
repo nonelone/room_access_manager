@@ -1,10 +1,10 @@
 from flask import Blueprint, abort, request
-from models import Tokens, Token, db
+from models import Tokens, Lock, db
 
 api_blueprint = Blueprint('api', __name__)
 
 def check_authority(nfc_id, token_id):
-    token = db.session.query(Tokens).join(Token).filter(
+    token = db.session.query(Tokens).join(Lock).filter(
         Tokens.nfc_id == nfc_id,
         Tokens.token_id == token_id     
     ).first()
