@@ -3,41 +3,31 @@
 Log In
 {% endblock %}
 {% block body %}
-    {% if bad %}
-        <h1 style="text-align: center;">Incorrect password or email!</h1>
-    {% endif %}
-    <table style="width: 90%; margin-left: 5%; margin-right: 5%; margin-top: 3%;">
-        <tr>
-            <td>
-                <img src="{{url_for('static', filename='icon.svg')}}">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 1.5vw;">
-                    Login
-                </p>
-            </td>
-        </tr>
-        <form method="POST" action="{{ url_for('auth.login') }}">
-            <tr>
-                <td>
-                    <label for="email" style="font-size: 1vw;">Email:</label><br>
-                    <input type="text" name="email" required>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="password" style="font-size: 1vw;">Password:</label><br>
-                    <input type="password" name="password" required>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <br>
-                    <input style="font-size: 1vw;" type="submit" value="Login">
-                </td>
-            </tr>
-        </form>
-    </table>
+
+{% if bad %}
+    <div class="alert alert-danger" role="alert">
+        Incorrect password or email.
+    </div>
+{% endif %}
+
+<div style="padding-left: 35%; padding-right: 35%; padding-top: 10%;">
+    <div class="card text-center" style="padding-top: 10%; background-color: #2F2D2E; color: white;">
+        <h2 class="card-title">Login to R.A.M</h2>
+        <img src="{{url_for('static', filename='icon.svg')}}" class="card-img-top" style="padding: 5%;">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                <label for="email" style="font-size: 2vw;">Email:</label><br>
+                <input type="text" name="email" required>
+                <br>
+                <label for="password" style="font-size: 2vw;">Password:</label><br>
+                <input type="password" name="password" required>
+                <br>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

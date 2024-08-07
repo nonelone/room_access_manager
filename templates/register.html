@@ -20,11 +20,15 @@ Account registration
 </table>
 
 {% if bad %}
-<h1 style="text-align: center;">Can't create an account!</h1>
+<div class="alert alert-warning" role="alert">
+    Can't create an account!
+</div>
 {% endif %}
 
 {% if good %}
-<h1 style="text-align: center;">Account created!</h1>
+<div class="alert alert-success" role="alert">
+    Account created.
+</div>
 {% endif %}
 
 <table style="width: 100%;">

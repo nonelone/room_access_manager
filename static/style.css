@@ -1,17 +1,25 @@
 a:visited {
-    color: black;
+    color: whitesmoke;
     text-decoration: none;
 }
 a:hover {
-    color: black;
+    color: #9D8DF1;
     text-decoration: none;
 }
 a {
-    color: #000;
+    color: whitesmoke;
     text-decoration: none;
 }
 td 
 {
     text-align: center; 
     vertical-align: middle;
+    font-size: 2vw;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #2F2D2E;
+    color: whitesmoke;
 }

@@ -34,7 +34,10 @@ def page_not_found(e):
 
 @app.route('/')
 def home_page():
-    return render_template("home.html")
+    if current_user.is_authenticated: 
+        return redirect(url_for('auth.manager'))
+    #return render_template("home.html")
+    return render_template('login.html')
 
 if __name__ == "__main__":
     print(

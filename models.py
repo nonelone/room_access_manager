@@ -26,7 +26,7 @@ class Lock(db.Model):
     lock_name = db.Column(db.String(30), nullable=False, unique=True)
     token = db.Column(db.String(255), nullable=False, unique=True)
 
-class Tokens(db.Model):
+class Tokens(db.Model): #connections
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
     nfc_id = db.Column(db.Integer, db.ForeignKey(User.nfc_id))
     lock_id = db.Column(db.Integer, db.ForeignKey(Lock.id))
