@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User manager
+{% endblock %}
+
+{% block body %}
+
+{% if cant_register %}
+    <div class="alert alert-warning" role="alert" style="text-align: center;">
+        Can't create user! Is the ID unique?
+    </div>
+{% elif register %}
+    <div class="alert alert-success" role="alert" style="text-align: center;">
+        Created user.
+    </div>
+{% endif %}
+
+<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h1 class="card-title">Users</h1>
+        <div class="card-body">
+            <table width="100%">
+                <tr style="font-size: 2vw;">
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        Last Name
+                    </td>
+                    <td>
+                        NFC ID
+                    </td>
+                    <td>
+                        Access
+                    </td>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>
+                        {{ user.user_name }}
+                    </td>
+                    <td>
+                        {{ user.user_last_name }}
+                    </td>
+                    <td>
+                        {{ user.nfc_id }}
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">List</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<nav aria-label="" data-bs-theme="dark">
+    <ul class="pagination justify-content-center">
+    {% if users.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('manager.user_manager', page=users.prev_num) }}" tabindex="-1" aria-disabled="false">Previous</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+    {% endif %}
+      {% for page in users.iter_pages() %}
+        <li class="page-item {% if users.page == page %} active {% endif %}">
+            <a class="page-link" href="{{ url_for('manager.user_manager', page=page) }}">{{ page }}</a>
+        </li>
+      {%- endfor %}
+    {% if users.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('manager.user_manager', page=users.next_num) }}" tabindex="-1" aria-disabled="false">Next</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+    {% endif %}
+    </ul>
+  </nav>
+
+
+  <div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h1 class="card-title">Add user</h1>
+        <div class="card-body">
+            <table width="100%">
+                <tr>
+                    <form method="POST" action="{{ url_for('manager.user_manager') }}">
+                        <td>
+                            <label for="name" style="font-size: 1vw;">Name:</label>
+                            <input type="text" name="name" required>
+                        </td>
+                        <td>
+                            <label for="lastname" style="font-size: 1vw;">Last Name:</label>
+                            <input type="text" name="lastname" required>
+                        </td>
+                        <td>
+                            <label for="ID" style="font-size: 1vw;">ID:</label>
+                            <input type="text" name="ID" required>
+                        </td>
+                        <td>
+                            <input style="font-size: 1vw;" type="submit" value="Add user">
+                        </td>
+                    </form>
+            </table>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

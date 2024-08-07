@@ -1,16 +1,19 @@
 from flask import Flask, redirect, url_for, render_template
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
-from auth import auth_blueprint
-from api import api_blueprint
 from models import db, init_database, Admin
 
 import os
+
+from auth import auth_blueprint
+from api import api_blueprint
+from manager import manager_blueprint
 
 app = Flask(__name__, instance_relative_config=True)
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(api_blueprint)
+app.register_blueprint(manager_blueprint)
 
 app.config.from_object('config') # "global" configuration from config.py
 app.config.from_pyfile('secrets.py') # "secret" configurations in instance/secrets.py
@@ -35,8 +38,8 @@ def page_not_found(e):
 @app.route('/')
 def home_page():
     if current_user.is_authenticated: 
-        return redirect(url_for('auth.manager'))
-    #return render_template("home.html")
+        return redirect(url_for('manager.user_manager'))
+        #return render_template("home.html")
     return render_template('login.html')
 
 if __name__ == "__main__":

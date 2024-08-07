@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manager
+{% endblock %}
+
+{% block body %}
+
+{% if cant_register %}
+    <div class="alert alert-warning" role="alert">
+        Can't create account! Is the email unique?
+    </div>
+{% elif register %}
+    <div class="alert alert-success" role="alert">
+        Created account.
+    </div>
+{% endif %}
+
+<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h1 class="card-title">Admins</h1>
+        <div class="card-body">
+            <table width="100%">
+                <tr style="font-size: 2vw;">
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        Last Name
+                    </td>
+                    <td>
+                        Email
+                    </td>
+                </tr>
+                {% for admin in admins %}
+                <tr>
+                    <td>
+                        {{ admin.admin_name }}
+                    </td>
+                    <td>
+                        {{ admin.admin_last_name }}
+                    </td>
+                    <td>
+                        <div id="email_for_{{ admin.id }}" class="btn btn-secondary">
+                            <p onclick="document.getElementById('email_for_{{ admin.id }}').innerHTML = '{{ admin.email}}';">Click to reveal</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<nav aria-label="" data-bs-theme="dark">
+    <ul class="pagination justify-content-center">
+    {% if admins.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('manager.admin_manager', page=admins.prev_num) }}" tabindex="-1" aria-disabled="false">Previous</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+    {% endif %}
+      {% for page in admins.iter_pages() %}
+        <li class="page-item {% if admins.page == page %} active {% endif %}">
+            <a class="page-link" href="{{ url_for('manager.admin_manager', page=page) }}">{{ page }}</a>
+        </li>
+      {%- endfor %}
+    {% if admins.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('manager.admin_manager', page=admins.next_num) }}" tabindex="-1" aria-disabled="false">Next</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+    {% endif %}
+    </ul>
+  </nav>
+
+
+<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h1 class="card-title">Add admin</h1>
+        <div class="card-body">
+            <table width="100%">
+                <tr>
+                    <form method="POST" action="{{ url_for('manager.admin_manager') }}">
+                        <td>
+                            <label for="name" style="font-size: 1vw;">Name:</label>
+                            <input type="text" name="name" required>
+                        </td>
+                        <td>
+                            <label for="lastname" style="font-size: 1vw;">Last Name:</label>
+                            <input type="text" name="lastname" required>
+                        </td>
+                        <td>
+                            <label for="email" style="font-size: 1vw;">Emial:</label>
+                            <input type="text" name="email" required>
+                        </td>
+                        <td>
+                            <label for="password" style="font-size: 1vw;">Password:</label>
+                            <input type="password" name="password" required>
+                        </td>
+                        <td>
+                            <input style="font-size: 1vw;" type="submit" value="Add admin">
+                        </td>
+                    </form>
+            </table>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}
