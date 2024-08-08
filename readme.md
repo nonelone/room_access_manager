@@ -22,11 +22,3 @@ On the first run, you will be prompted for user data for admin.
 You can also make fake users and locks with `fraud.fake_users(n)` and `fraud.fake_locks(n)` respectively.  
 Fake admins will always have an email like `admin1@example.com` and password of `admin`.  
 **Disclaimer:** You have to run the app at least once in order to initialize the database!
-
-
-# TODO!
-
-- user management page
-- admin account creation
-- adding locks
-- managing permisions

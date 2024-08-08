@@ -52,6 +52,19 @@ def add_lock(lock_name):
 
         return token
 
+def connect_lock(lock_id,  nfc_id):
+    if Tokens.query.filter_by(lock_id=lock_id).filter_by(nfc_id=nfc_id).first() is None:
+        new_token = Tokens(nfc_id=nfc_id, lock_id=lock_id)
+        db.session.add(new_token)
+        db.session.commit()
+
+def disconnect_lock(lock_id, nfc_id):
+    _token = db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).first()
+    if _token:
+        print(_token)
+        db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).delete()
+        db.session.commit()
+
 def init_database():
     if os.path.isfile('instance/db'):
         print("Found database...")

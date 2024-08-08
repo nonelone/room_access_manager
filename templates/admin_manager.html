@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Manager
+Admin manager
 {% endblock %}
 
 {% block body %}
@@ -41,9 +41,7 @@ Manager
                         {{ admin.admin_last_name }}
                     </td>
                     <td>
-                        <div id="email_for_{{ admin.id }}" class="btn btn-secondary">
-                            <p onclick="document.getElementById('email_for_{{ admin.id }}').innerHTML = '{{ admin.email}}';">Click to reveal</p>
-                        </div>
+                        <input type="button" value="Click to reveal" id="email_for_{{ admin.id }}" class="btn btn-secondary" onclick="document.getElementById('email_for_{{ admin.id }}').value = '{{ admin.email}}';">
                     </td>
                 </tr>
                 {% endfor %}

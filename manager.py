@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from models import db, Admin, User, add_admin, add_user
+from models import db, Admin, User, Tokens, Lock, add_admin, add_user, connect_lock, disconnect_lock
 
 manager_blueprint = Blueprint('manager', __name__)
 
@@ -59,3 +59,34 @@ def admin_manager():
             return render_template('admin_manager.html', admins=admins, register=True)
 
     return render_template('admin_manager.html', admins=admins)
+
+
+@manager_blueprint.route("/access_manager",methods=['GET','POST'])
+@login_required
+def access_manager():
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        lock_to_connect = None
+        try:
+            
+            lock_to_connect = request.form['lock_id']
+            deleting = request.form['to_delete']
+            print(deleting)
+            if lock_to_connect != None and user_id != '':
+                if deleting == 'True':
+                    disconnect_lock(lock_to_connect, user_id)
+                else:
+                    connect_lock(lock_to_connect, user_id)
+
+        except: print("Opening page")
+        
+        connected_locks = db.session.query(Lock).join(Tokens, Lock.id == Tokens.lock_id, isouter=True).filter(Tokens.nfc_id == user_id).all()#
+        Tokens.query.filter_by(nfc_id=user_id).all()
+        locks_ids = []
+        for lock in connected_locks: locks_ids.append(lock.id)
+        avaliable_locks = Lock.query.filter(Lock.id.not_in(locks_ids)).all()
+         #db.session.query(Lock).join(Tokens, Lock.id == Tokens.lock_id, isouter=True).filter(Tokens.nfc_id == None).all()
+        user = User.query.filter_by(nfc_id=user_id).first()
+        return render_template('access_manager.html', user=user, connected_locks=connected_locks, avaliable_locks=avaliable_locks)
+
+    return render_template('404.html')

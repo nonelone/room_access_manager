@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Access manager for {{ user.user_name }} {{ user.user_last_name }}
+{% endblock %}
+
+{% block body %}
+
+
+<div style="padding-left: 10%; padding-right: 10%; padding-top: 5%; padding-bottom: 5%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h3 class="card-title">{{ user.user_name }} {{ user.user_last_name }}</h3>
+        <div class="card-body">
+            <h6>NFC ID: {{ user.nfc_id }}</h6>
+            <table style="padding-left: 10%; padding-right: 10%; width: 100%;">
+                <tr>
+                    <td>
+                        Lock name
+                    </td>
+                    <td>
+                        Action
+                    </td>
+                </tr>
+                {% for lock in connected_locks %}
+
+                <tr>
+                    <td>
+                        <h2>
+                            {{ lock.lock_name }}
+                        </h2>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('manager.access_manager') }}">
+                            <input type="hidden" value="{{ lock.id }}" name="lock_id" id="lock_id">
+                            <input type="hidden" value="{{ user.nfc_id }}" name="user_id" id="user_id">
+                            <input type="hidden" value="True" name="to_delete" id="to_delete">
+                            <input type="submit" class="btn btn-danger" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+        <h3 class="card-title">Add permision for lock</h3>
+        <div class="card-body">
+            <table width="100%">
+                {% for lock in avaliable_locks %}
+                <tr>
+                    <td>
+                        {{ lock.lock_name }}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('manager.access_manager') }}">
+                            <input type="hidden" value="{{ lock.id }}" name="lock_id" id="lock_id">
+                            <input type="hidden" value="{{ user.nfc_id }}" name="user_id" id="user_id">
+                            <input type="hidden" value="False" name="to_delete" id="to_delete">
+                            <input type="submit" class="btn btn-success" value="Connect">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

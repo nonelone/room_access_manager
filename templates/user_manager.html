@@ -47,7 +47,10 @@ User manager
                         {{ user.nfc_id }}
                     </td>
                     <td>
-                        <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">List</a>
+                        <form method="POST" action="{{ url_for('manager.access_manager') }}">
+                            <input type="hidden" value="{{ user.nfc_id }}" name="user_id" id="user_id">
+                            <input style="font-size: 1vw;" type="submit" value="Manage" class="btn btn-secondary">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
