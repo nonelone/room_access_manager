@@ -2,3 +2,4 @@ HOST = '0.0.0.0'
 PORT = 2137
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///db'
+BEHIND_PROXY = False

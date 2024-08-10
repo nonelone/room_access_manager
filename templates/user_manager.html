@@ -6,32 +6,32 @@ User manager
 
 {% block body %}
 
-{% if cant_register %}
-    <div class="alert alert-warning" role="alert" style="text-align: center;">
-        Can't create user! Is the ID unique?
-    </div>
-{% elif register %}
-    <div class="alert alert-success" role="alert" style="text-align: center;">
-        Created user.
-    </div>
-{% endif %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ 'alert alert-success' if message == 'User registered!' else 'alert alert-danger'}}" role="alert" style="position: relative; text-align: center;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
-    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+<div style="padding-left: 15%; padding-right: 15%; padding-top: 2%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 1%; padding-bottom: 1%;">
         <h1 class="card-title">Users</h1>
         <div class="card-body">
             <table width="100%">
                 <tr style="font-size: 2vw;">
-                    <td>
+                    <td width="25%">
                         Name
                     </td>
-                    <td>
+                    <td width="25%">
                         Last Name
                     </td>
-                    <td>
+                    <td width="25%">
                         NFC ID
                     </td>
-                    <td>
+                    <td width="25%">
                         Access
                     </td>
                 </tr>
@@ -87,29 +87,30 @@ User manager
   </nav>
 
 
-  <div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
-    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+  <div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%; padding-bottom: 3%;">
         <h1 class="card-title">Add user</h1>
         <div class="card-body">
-            <table width="100%">
-                <tr>
-                    <form method="POST" action="{{ url_for('manager.user_manager') }}">
-                        <td>
+            <table style="padding-left: 15%; padding-right: 15%; width: 100%;">
+                <form method="POST" action="{{ url_for('manager.user_manager') }}">
+                    <tr style="width: 100%;">
+                        <td width="25%">
                             <label for="name" style="font-size: 1vw;">Name:</label>
                             <input type="text" name="name" required>
                         </td>
-                        <td>
+                        <td width="25%">
                             <label for="lastname" style="font-size: 1vw;">Last Name:</label>
                             <input type="text" name="lastname" required>
                         </td>
-                        <td>
+                        <td width="25%">
                             <label for="ID" style="font-size: 1vw;">ID:</label>
                             <input type="text" name="ID" required>
                         </td>
-                        <td>
-                            <input style="font-size: 1vw;" type="submit" value="Add user">
+                        <td width="25%">
+                            <input style="width: 75%;" type="submit" class="btn btn-success" value="Add user">
                         </td>
-                    </form>
+                    </tr>
+                </form>
             </table>
         </div>
     </div>

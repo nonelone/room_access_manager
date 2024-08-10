@@ -49,7 +49,6 @@ def add_lock(lock_name):
         new_lock = Lock(lock_name=lock_name, token=token)
         db.session.add(new_lock)
         db.session.commit()
-
         return token
 
 def connect_lock(lock_id,  nfc_id):

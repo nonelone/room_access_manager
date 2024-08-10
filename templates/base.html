@@ -16,7 +16,9 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container">
               <div class="navbar-brand">
-                <img src="{{url_for('static', filename='icon.svg')}}" alt="" width="50" height="50" class="d-inline-block align-text-top">
+                <a href="{{ url_for('manager.manager') }}">
+                  <img src="{{url_for('static', filename='icon.svg')}}" alt="" width="50" height="50" class="d-inline-block align-text-top">
+                </a>
               </div>
               <div class="navbar-nav ml-auto">
                 <h2>Hello, {{ current_user.admin_name }} {{ current_user.admin_last_name}}</h2>

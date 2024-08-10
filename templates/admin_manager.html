@@ -6,42 +6,42 @@ Admin manager
 
 {% block body %}
 
-{% if cant_register %}
-    <div class="alert alert-warning" role="alert">
-        Can't create account! Is the email unique?
-    </div>
-{% elif register %}
-    <div class="alert alert-success" role="alert">
-        Created account.
-    </div>
-{% endif %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ 'alert alert-success' if message == 'Admin account created.' else 'alert alert-danger'}}" role="alert" style="position: relative; text-align: center;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
-    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+<div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 1%;">
         <h1 class="card-title">Admins</h1>
         <div class="card-body">
             <table width="100%">
                 <tr style="font-size: 2vw;">
-                    <td>
+                    <td width="33%">
                         Name
                     </td>
-                    <td>
+                    <td width="33%">
                         Last Name
                     </td>
-                    <td>
+                    <td width="33%">
                         Email
                     </td>
                 </tr>
                 {% for admin in admins %}
                 <tr>
-                    <td>
+                    <td width="33%">
                         {{ admin.admin_name }}
                     </td>
-                    <td>
+                    <td width="33%">
                         {{ admin.admin_last_name }}
                     </td>
-                    <td>
-                        <input type="button" value="Click to reveal" id="email_for_{{ admin.id }}" class="btn btn-secondary" onclick="document.getElementById('email_for_{{ admin.id }}').value = '{{ admin.email}}';">
+                    <td width="33%">
+                        <input type="button" style="width: 50%;" value="Click to reveal" id="email_for_{{ admin.id }}" class="btn btn-secondary" onclick="document.getElementById('email_for_{{ admin.id }}').value = '{{ admin.email}}';">
                     </td>
                 </tr>
                 {% endfor %}
@@ -80,34 +80,36 @@ Admin manager
   </nav>
 
 
-<div style="padding-left: 10%; padding-right: 10%; padding-top: 1%; padding-bottom: 1%">
-    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
+<div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%; padding-bottom: 2%;">
         <h1 class="card-title">Add admin</h1>
         <div class="card-body">
-            <table width="100%">
-                <tr>
-                    <form method="POST" action="{{ url_for('manager.admin_manager') }}">
-                        <td>
-                            <label for="name" style="font-size: 1vw;">Name:</label>
+            <form method="POST" action="{{ url_for('manager.admin_manager') }}">
+                <table style="width: 50%; margin-left: 25%; margin-right: 25%; border-spacing: 10px;">
+                    <tr>
+                        <td width="50%">
+                            <label for="name" style="font-size: 1vw;">Name:</label><br>
                             <input type="text" name="name" required>
                         </td>
                         <td>
-                            <label for="lastname" style="font-size: 1vw;">Last Name:</label>
+                            <label for="lastname" style="font-size: 1vw;">Last Name:</label><br>
                             <input type="text" name="lastname" required>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
-                            <label for="email" style="font-size: 1vw;">Emial:</label>
+                            <label for="email" style="font-size: 1vw;">Email:</label><br>
                             <input type="text" name="email" required>
                         </td>
                         <td>
-                            <label for="password" style="font-size: 1vw;">Password:</label>
+                            <label for="password" style="font-size: 1vw;">Password:</label><br>
                             <input type="password" name="password" required>
                         </td>
-                        <td>
-                            <input style="font-size: 1vw;" type="submit" value="Add admin">
-                        </td>
-                    </form>
-            </table>
+                    </tr>
+                </table>
+                <br>
+                <input style="width: 25%;" type="submit" value="Add admin" class="btn btn-success">
+            </form>
         </div>
     </div>
 </div>

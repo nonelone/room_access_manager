@@ -1,35 +1,47 @@
-from flask import Blueprint, render_template, redirect, request, url_for
+from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from models import db, Admin, User, Tokens, Lock, add_admin, add_user, connect_lock, disconnect_lock
+from models import db, Admin, User, Tokens, Lock, add_admin, add_user, add_lock, connect_lock, disconnect_lock
 
-manager_blueprint = Blueprint('manager', __name__)
+manager_blueprint = Blueprint('manager', __name__) #register blueprint
 
+@manager_blueprint.route('/manager', methods=['GET'])
+@login_required
+def manager():
+    admins = Admin.query.count()
+    users = User.query.count()
+    locks = Lock.query.count()
+    connections = Tokens.query.count()
+    return render_template('manager.html', admins=admins, users=users, locks=locks, connections=connections)
 
 @manager_blueprint.route('/user_manager',methods=['GET', 'POST'])
 @login_required
 def user_manager():
-    try:
-        page = int(request.args['page'])
-    except:
-        page = 1
+    #get page from requests; if it doesn't exist, default to 1
+    page = int(request.args['page']) if 'page' in request.args else 1
     
     users = User.query.paginate(page=page,per_page=20,error_out=False)
+    print(users.next_num)
 
+    #generate URLs for next and previous pages if there are any
     next_url = url_for('manager.user_manager', page=users.next_num) if users.has_next else None
     prev_url = url_for('manager.user_manager', page=users.prev_num) if users.has_prev else None
 
-    if request.method == 'POST':
+    if request.method == 'POST': #account creation:
         name = request.form['name']
         last_name = request.form['lastname']
         nfc_id = request.form['ID']
 
         if name and last_name and nfc_id:
             if User.query.filter_by(nfc_id=nfc_id).first():
-                return render_template('user_manager.html', users=users, cant_register=True)
+                flash("Can't register user. Is the ID unique?")
+                users = User.query.paginate(page=page,per_page=20,error_out=False)
+                return render_template('user_manager.html', users=users)
             add_user(name, last_name, nfc_id)
-            return render_template('user_manager.html', users=users, register=True)
+            flash("User registered!")
+            users = User.query.paginate(page=page,per_page=20,error_out=False)
+            return render_template('user_manager.html', users=users)
 
     return render_template('user_manager.html', users=users)
 
@@ -54,9 +66,12 @@ def admin_manager():
 
         if admin_name and admin_last_name and email and password:
             if Admin.query.filter_by(email=email).first():
-                return render_template('admin_manager.html', admins=admins, cant_register=True)
+                flash("Acount can't be created! Is the email unique?")
+                return render_template('admin_manager.html', admins=admins)
             add_admin(admin_name, admin_last_name, email, password)
-            return render_template('admin_manager.html', admins=admins, register=True)
+            admins = Admin.query.with_entities(Admin.admin_name, Admin.admin_last_name, Admin.email, Admin.id).paginate(page=page,per_page=20,error_out=False)
+            flash('Admin account created.')
+            return render_template('admin_manager.html', admins=admins)
 
     return render_template('admin_manager.html', admins=admins)
 
@@ -85,7 +100,6 @@ def access_manager():
         locks_ids = []
         for lock in connected_locks: locks_ids.append(lock.id)
         avaliable_locks = Lock.query.filter(Lock.id.not_in(locks_ids)).all()
-         #db.session.query(Lock).join(Tokens, Lock.id == Tokens.lock_id, isouter=True).filter(Tokens.nfc_id == None).all()
         user = User.query.filter_by(nfc_id=user_id).first()
         return render_template('access_manager.html', user=user, connected_locks=connected_locks, avaliable_locks=avaliable_locks)
 

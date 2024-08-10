@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, render_template
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from models import db, init_database, Admin
 
@@ -38,8 +39,8 @@ def page_not_found(e):
 @app.route('/')
 def home_page():
     if current_user.is_authenticated: 
-        return redirect(url_for('manager.user_manager'))
-        #return render_template("home.html")
+        #return redirect(url_for('manager.user_manager'))
+        return render_template("home.html")
     return render_template('login.html')
 
 if __name__ == "__main__":
@@ -55,4 +56,9 @@ if __name__ == "__main__":
     with app.app_context():
         init_database()
     print(f"Starting app @ {app.config['HOST']}:{app.config['PORT']} with debug set to {app.config['DEBUG']}...")
+    if app.config['BEHIND_PROXY']:
+        print("Running behind a proxy...")
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+        )
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])

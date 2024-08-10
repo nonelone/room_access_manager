@@ -4,22 +4,25 @@ Log In
 {% endblock %}
 {% block body %}
 
-{% if bad %}
-    <div class="alert alert-danger" role="alert">
-        Incorrect password or email.
-    </div>
-{% endif %}
-
-<div style="padding-left: 35%; padding-right: 35%; padding-top: 10%;">
-    <div class="card text-center" style="padding-top: 10%; background-color: #2F2D2E; color: white;">
-        <h2 class="card-title">Login to R.A.M</h2>
-        <img src="{{url_for('static', filename='icon.svg')}}" class="card-img-top" style="padding: 5%;">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger" role="alert" style="position: relative; text-align: center;">
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div style="padding-left: 35%; padding-right: 35%; padding-top: 5%;">
+    <div class="card text-center" style="padding-top: 5%; background-color: #2F2D2E; color: white;">
+        <img src="{{url_for('static', filename='icon.svg')}}" class="card-img-top" style="display: block; margin: auto; max-width: 30%;">
+        <h1 class="card-title">Login to R.A.M</h1>
         <div class="card-body">
             <form method="POST" action="{{ url_for('auth.login') }}">
-                <label for="email" style="font-size: 2vw;">Email:</label><br>
+                <label for="email">Email:</label><br>
                 <input type="text" name="email" required>
                 <br>
-                <label for="password" style="font-size: 2vw;">Password:</label><br>
+                <label for="password">Password:</label><br>
                 <input type="password" name="password" required>
                 <br>
                 <br>
