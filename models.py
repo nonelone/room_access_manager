@@ -52,7 +52,6 @@ def delete_user(nfc_id):
     if User.query.filter_by(nfc_id=nfc_id).first():
         db.session.query(User).filter(User.nfc_id==nfc_id).delete()
         db.session.query(Tokens).filter(Tokens.nfc_id==nfc_id).delete()
-        #tokens = Tokens.query.filter_by(nfc_id=nfc_id).all()
         db.session.commit()
 
 def add_lock(lock_name):
@@ -73,6 +72,12 @@ def disconnect_lock(lock_id, nfc_id):
     _token = db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).first()
     if _token:
         db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).delete()
+        db.session.commit()
+
+def delete_lock(lock_id):
+    if Lock.query.filter_by(id=lock_id).first():
+        db.session.query(Lock).filter(Lock.id==lock_id).delete()
+        db.session.query(Tokens).filter(Tokens.lock_id==lock_id).delete()
         db.session.commit()
 
 def init_database():

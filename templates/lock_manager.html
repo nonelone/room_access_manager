@@ -37,6 +37,9 @@ Lock manager
                     <td width="50%">
                         <input type="button" style="width: 100%;" value="Click to reveal" id="token_for{{ lock.id }}" class="btn btn-secondary" onclick="document.getElementById('token_for{{ lock.id }}').value = '{{ lock.token }}';">
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletion_modal_{{ lock.id }}">Delete</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -65,4 +68,29 @@ Lock manager
     </div>
 </div>
 <br>
+
+{% for lock in locks %}
+
+<div class="modal fade" id="deletion_modal_{{ lock.id }}" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background-color: #2F2D2E; color: white;">
+        <div class="modal-header">
+        
+        <h4 class="modal-title">Are you sure?</h4>
+        </div>
+        <div class="modal-body" style="background-color: #2F2D2E;">
+        <p>You are about to delete {{ lock.lock_name }}. This cannot be undone.<br>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="POST" action="{{ url_for('manager.manager_delete_lock') }}">
+            <input type="hidden" value="{{ lock.id }}" id="lock_id" name="lock_id">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
