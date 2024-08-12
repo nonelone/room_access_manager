@@ -7,52 +7,63 @@ Manager
 {% block body %}
 
 
-<div style="padding-left: 20%; padding-right: 20%; padding-top: 5%; padding-bottom: 5%">
+<div style="padding-left: 20%; padding-right: 20%; padding-top: 2%; padding-bottom: 2%">
     <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%; padding-bottom: 2%;">
         <h1 class="card-title">Welcome to the magament zone</h1>
         <div class="card-body">
             <table width="100%">
-                <td width="50%">
-                    <div style="background-color: #5e5b5c; padding: 25px; border-radius: 25px; margin: 25px;">
-                        <h1 style="font-size: 5vw;">
-                            {{ admins }}
-                        </h1>
-                        <h1>
-                            admin accounts
-                        </h1>
-                        <br>
-                        <h2>
-                            {{ locks }} managed locks
-                        </h2>
-                        <br>
-                        <h4>
-                            <a href="{{ url_for('manager.admin_manager') }}" style="color: beige;">
-                                Manage admins
-                            </a>
-                        </h4>
-                    </div>
-                    
-                </td>
-                <td width="50%">
-                    <div style="background-color: #5e5b5c; padding: 25px; border-radius: 25px; margin: 25px;">
-                        <h1 style="font-size: 5vw;">
-                            {{ users }}
-                        </h1>
-                        <h1>
-                            users registered
-                        </h1>
-                        <br>
-                        <h2>
-                            {{ connections }} connections
-                        </h2>
-                        <br>
-                        <h4>
-                            <a href="{{ url_for('manager.user_manager') }}" style="color: beige;">
-                                Manage users
-                            </a>
-                        </h4>
-                    </div>
-                </td>
+                <tr>
+                    <td width="50%">
+                        <div style="background-color: #5e5b5c; padding: 25px; border-radius: 25px; margin: 25px;">
+                            <h1 style="font-size: 5vw;">
+                                {{ admins }}
+                            </h1>
+                            <h1>
+                                admin accounts
+                            </h1>
+                            <br>
+                            <h4>
+                                <a href="{{ url_for('manager.admin_manager') }}" style="color: beige;">
+                                    Manage admins
+                                </a>
+                            </h4>
+                        </div>
+                    </td>
+                    <td width="50%">
+                        <div style="background-color: #5e5b5c; padding: 25px; border-radius: 25px; margin: 25px;">
+                            <h1 style="font-size: 5vw;">
+                                {{ users }}
+                            </h1>
+                            <h1>
+                                users registered
+                            </h1>
+                            <br>
+                            <h4>
+                                <a href="{{ url_for('manager.user_manager') }}" style="color: beige;">
+                                    Manage users
+                                </a>
+                            </h4>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div style="background-color: #5e5b5c; padding: 25px; border-radius: 25px; margin: 25px;">
+                            <h1 style="font-size: 5vw;">
+                                {{ locks }}
+                            </h1>
+                            <h1>
+                                managed locks
+                            </h1>
+                            <br>
+                            <h4>
+                                <a href="{{ url_for('manager.lock_manager') }}" style="color: beige;">
+                                    Manage locks
+                                </a>
+                            </h4>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
