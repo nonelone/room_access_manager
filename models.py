@@ -37,6 +37,11 @@ def add_admin(name, last_name, email, password):
         db.session.add(new_admin)
         db.session.commit()
 
+def delete_admin(id):
+    if int(id) != 1 and Admin.query.filter_by(id=id).first():
+        db.session.query(Admin).filter(Admin.id==id).delete()
+        db.session.commit()
+
 def add_user(name, last_name, card_id):
     if User.query.filter_by(nfc_id=card_id).first() is None:
         new_user = User(user_name=name, user_last_name=last_name, nfc_id=card_id)
@@ -44,7 +49,6 @@ def add_user(name, last_name, card_id):
         db.session.commit()
 
 def delete_user(nfc_id):
-    print(nfc_id)
     if User.query.filter_by(nfc_id=nfc_id).first():
         db.session.query(User).filter(User.nfc_id==nfc_id).delete()
         db.session.query(Tokens).filter(Tokens.nfc_id==nfc_id).delete()
@@ -68,7 +72,6 @@ def connect_lock(lock_id,  nfc_id):
 def disconnect_lock(lock_id, nfc_id):
     _token = db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).first()
     if _token:
-        print(_token)
         db.session.query(Tokens).filter(Tokens.lock_id==lock_id).filter(Tokens.nfc_id==nfc_id).delete()
         db.session.commit()
 

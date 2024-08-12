@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from models import db, Admin, User, Tokens, Lock, add_admin, add_user, delete_user, add_lock, connect_lock, disconnect_lock
+from models import db, Admin, User, Tokens, Lock, add_admin, delete_admin, add_user, delete_user, add_lock, connect_lock, disconnect_lock
 
 manager_blueprint = Blueprint('manager', __name__) #register blueprint
 
@@ -50,6 +50,14 @@ def manager_delete_user():
         nfc_id = request.form['user_id']
         delete_user(nfc_id)
         return redirect(url_for('manager.user_manager'))
+
+@manager_blueprint.route("/delete_admin", methods=['POST'])
+@login_required
+def manager_delete_admin():
+    if request.method == 'POST':
+        admin_id = request.form['admin_id']
+        delete_admin(admin_id)
+        return redirect(url_for('manager.admin_manager'))
 
 @manager_blueprint.route("/admin_manager",methods=['GET','POST'])
 @login_required

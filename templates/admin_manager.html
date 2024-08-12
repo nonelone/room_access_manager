@@ -43,13 +43,19 @@ Admin manager
                     <td width="33%">
                         <input type="button" style="width: 50%;" value="Click to reveal" id="email_for_{{ admin.id }}" class="btn btn-secondary" onclick="document.getElementById('email_for_{{ admin.id }}').value = '{{ admin.email}}';">
                     </td>
+                    <td width="50%">
+                        {% if admin.id == 1 %}
+                            <button type="button" class="btn btn-danger" disabled>Delete</button>
+                        {% else %}
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletion_modal_{{ admin.id }}">Delete</button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
 </div>
-
 
 <nav aria-label="" data-bs-theme="dark">
     <ul class="pagination justify-content-center">
@@ -78,7 +84,6 @@ Admin manager
     {% endif %}
     </ul>
   </nav>
-
 
 <div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
     <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%; padding-bottom: 2%;">
@@ -114,4 +119,29 @@ Admin manager
     </div>
 </div>
 <br>
+
+{% for admin in admins %}
+    {% if admin.id != 1 %}
+    <div class="modal fade" id="deletion_modal_{{ admin.id }}" role="dialog">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background-color: #2F2D2E; color: white;">
+            <div class="modal-header">
+            
+            <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div class="modal-body" style="background-color: #2F2D2E;">
+            <p>You are about to delete {{ admin.admin_name }} {{ admin.admin_last_name }}'s account. This cannot be undone.<br>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form method="POST" action="{{ url_for('manager.manager_delete_admin') }}">
+                <input type="hidden" value="{{ admin.id }}" id="admin_id" name="admin_id">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
 {% endblock %}
