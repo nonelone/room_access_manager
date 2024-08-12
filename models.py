@@ -47,7 +47,7 @@ def delete_user(nfc_id):
     print(nfc_id)
     if User.query.filter_by(nfc_id=nfc_id).first():
         db.session.query(User).filter(User.nfc_id==nfc_id).delete()
-        db.session.query(Tokens).filter(nfc_id==nfc_id).delete()
+        db.session.query(Tokens).filter(Tokens.nfc_id==nfc_id).delete()
         #tokens = Tokens.query.filter_by(nfc_id=nfc_id).all()
         db.session.commit()
 
