@@ -25,5 +25,4 @@ Fake admins will always have an email like `admin1@example.com` and password of 
 
 
 # TODO:
-- add option to remove users?
-- add option to add and remove locks
+- Testing & potential bugfixes
