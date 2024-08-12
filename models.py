@@ -43,6 +43,12 @@ def add_user(name, last_name, card_id):
         db.session.add(new_user)
         db.session.commit()
 
+def delete_user(nfc_id):
+    print(nfc_id)
+    if User.query.filter_by(nfc_id=nfc_id).first():
+        db.session.query(User).filter(User.nfc_id==nfc_id).delete()
+        db.session.commit()
+
 def add_lock(lock_name):
     if Lock.query.filter_by(lock_name=lock_name).first() is None:
         token=secrets.token_hex(32)

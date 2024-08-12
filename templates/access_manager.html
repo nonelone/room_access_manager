@@ -15,7 +15,16 @@ Access manager for {{ user.user_name }} {{ user.user_last_name }}
     <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%;">
         <h3 class="card-title">Modifying permissions for <b>{{ user.user_name }} {{ user.user_last_name }}</b></h3>
         <div class="card-body">
-            <h6>(NFC ID: {{ user.nfc_id }})</h6>
+            <table style="width: 100%; padding-left: 10%; padding-right: 10%;">
+                <tr>
+                    <td width="50%">
+                        <h6>(NFC ID: {{ user.nfc_id }})</h6>
+                    </td>
+                    <td width="50%">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletion_modal">Delete user</button>
+                    </td>
+                </tr>
+            </table>
             {% if connected_locks|length == 0 %}
                 <br>
                 <h2>No connected locks.</h2>
@@ -79,5 +88,27 @@ Access manager for {{ user.user_name }} {{ user.user_last_name }}
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deletion_modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background-color: #2F2D2E; color: white;">
+        <div class="modal-header">
+          
+          <h4 class="modal-title">Are you sure?</h4>
+        </div>
+        <div class="modal-body" style="background-color: #2F2D2E;">
+          <p>You are about to delete {{ user.user_name }} {{ user.user_last_name }}'s account. This cannot be undone.<br>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="POST" action="{{ url_for('manager.manager_delete_user') }}">
+            <input type="hidden" value="{{ user.nfc_id }}" id="user_id" name="user_id">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 {% endblock %}

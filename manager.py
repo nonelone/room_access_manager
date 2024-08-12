@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from models import db, Admin, User, Tokens, Lock, add_admin, add_user, add_lock, connect_lock, disconnect_lock
+from models import db, Admin, User, Tokens, Lock, add_admin, add_user, delete_user, add_lock, connect_lock, disconnect_lock
 
 manager_blueprint = Blueprint('manager', __name__) #register blueprint
 
@@ -21,7 +21,6 @@ def user_manager():
     page = int(request.args['page']) if 'page' in request.args else 1
     
     users = User.query.paginate(page=page,per_page=20,error_out=False)
-    print(users.next_num)
 
     #generate URLs for next and previous pages if there are any
     next_url = url_for('manager.user_manager', page=users.next_num) if users.has_next else None
@@ -43,6 +42,14 @@ def user_manager():
             return render_template('user_manager.html', users=users)
 
     return render_template('user_manager.html', users=users)
+
+@manager_blueprint.route("/delete_user", methods=['POST'])
+@login_required
+def manager_delete_user():
+    if request.method == 'POST':
+        nfc_id = request.form['user_id']
+        delete_user(nfc_id)
+        return redirect(url_for('manager.user_manager'))
 
 @manager_blueprint.route("/admin_manager",methods=['GET','POST'])
 @login_required
