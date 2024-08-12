@@ -12,8 +12,7 @@ def manager():
     admins = Admin.query.count()
     users = User.query.count()
     locks = Lock.query.count()
-    connections = Tokens.query.count()
-    return render_template('manager.html', admins=admins, users=users, locks=locks, connections=connections)
+    return render_template('manager.html', admins=admins, users=users, locks=locks)
 
 @manager_blueprint.route('/user_manager',methods=['GET', 'POST'])
 @login_required
@@ -74,6 +73,25 @@ def admin_manager():
             return render_template('admin_manager.html', admins=admins)
 
     return render_template('admin_manager.html', admins=admins)
+
+@manager_blueprint.route("/lock_manager",methods=['GET','POST'])
+@login_required
+def lock_manager():
+    locks = Lock.query.all()
+
+    if request.method == 'POST':
+        lock_name = request.form['lock_name']
+
+        if lock_name:
+            if Lock.query.filter_by(lock_name=lock_name).first():
+                flash("Lock can't be registered. Is the name unique?")
+                return render_template('lock_manager.html', locks=locks)
+            add_lock(lock_name)
+            locks = Lock.query.all()
+            flash('Lock registered.')
+            return render_template('lock_manager.html', locks=locks)
+
+    return render_template('lock_manager.html', locks=locks)
 
 
 @manager_blueprint.route("/access_manager",methods=['GET','POST'])

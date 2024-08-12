@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Lock manager
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ 'alert alert-success' if message == 'Lock registered.' else 'alert alert-danger'}}" role="alert" style="position: relative; text-align: center;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 1%;">
+        <h1 class="card-title">Locks</h1>
+        <div class="card-body">
+            <table width="100%">
+                <tr style="font-size: 2vw;">
+                    <td width="50%">
+                        Name
+                    </td>
+                    <td width="50%">
+                        Token
+                    </td>
+                </tr>
+                {% for lock in locks %}
+                <tr>
+                    <td width="50%">
+                        {{ lock.lock_name }}
+                    </td>
+                    <td width="50%">
+                        <input type="button" style="width: 100%;" value="Click to reveal" id="token_for{{ lock.id }}" class="btn btn-secondary" onclick="document.getElementById('token_for{{ lock.id }}').value = '{{ lock.token }}';">
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<div style="padding-left: 15%; padding-right: 15%; padding-top: 1%; padding-bottom: 1%">
+    <div class="card text-center" style="background-color: #2F2D2E; color: white; padding-top: 2%; padding-bottom: 2%;">
+        <h1 class="card-title">Register lock</h1>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('manager.lock_manager') }}">
+                <table style="width: 50%; margin-left: 25%; margin-right: 25%; border-spacing: 10px;">
+                    <tr>
+                        <td width="50%">
+                            <label for="lock_name" style="font-size: 1vw;">Lock name:</label>
+                            <input type="text" name="lock_name" required>
+                        </td>
+                        <td width="50%">
+                            <input style="width: 100%;" type="submit" value="Register lock" class="btn btn-success">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}
