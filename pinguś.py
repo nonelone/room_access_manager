@@ -1,7 +1,8 @@
 import requests
 import config
 
-host = input("$ host IP (with protocol & without /api) > ")
+host = input("$ host IP (with protocol & /api) > ")
+print(host)
 while True:
     token = input("$ token > ")
     key = input("$ key card > ")
