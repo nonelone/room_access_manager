@@ -41,7 +41,14 @@ Admin manager
                         {{ admin.admin_last_name }}
                     </td>
                     <td width="33%">
-                        <input type="button" style="width: 50%;" value="Click to reveal" id="email_for_{{ admin.id }}" class="btn btn-secondary" onclick="document.getElementById('email_for_{{ admin.id }}').value = '{{ admin.email}}';">
+                        <input 
+                            type="button" 
+                            style="width: 100%;" 
+                            value="Click to copy" 
+                            id="admin_{{ admin.id }}" 
+                            class="btn btn-secondary" 
+                            onclick="navigator.clipboard.writeText('{{ admin.email }}');document.getElementById('admin_{{ admin.id }}').value = 'Copied';"
+                        >
                     </td>
                     <td width="50%">
                         {% if admin.id == 1 %}

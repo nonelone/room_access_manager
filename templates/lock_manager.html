@@ -35,7 +35,14 @@ Lock manager
                         {{ lock.lock_name }}
                     </td>
                     <td width="50%">
-                        <input type="button" style="width: 100%;" value="Click to reveal" id="token_for{{ lock.id }}" class="btn btn-secondary" onclick="document.getElementById('token_for{{ lock.id }}').value = '{{ lock.token }}';">
+                        <input 
+                            type="button" 
+                            style="width: 100%;" 
+                            value="Click to copy" 
+                            id="token_for{{ lock.id }}" 
+                            class="btn btn-secondary" 
+                            onclick="navigator.clipboard.writeText('{{ lock.token }}');document.getElementById('token_for{{ lock.id }}').value = 'Copied';"
+                        >
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletion_modal_{{ lock.id }}">Delete</button>
